@@ -1,3 +1,5 @@
+#include "sqfunc.h"
+
 #include <sqapi.h>
 #include <Union/Hook.h>
 #include <ZenGin/zGothicAPI.h>
@@ -18,6 +20,23 @@ void __fastcall zCAICamera__AI_LookingCam(zCAICamera* self, void* vtable)
 extern "C" SQRESULT SQRAT_API sqmodule_load(HSQUIRRELVM vm, HSQAPI api)
 {
 	SqModule::Initialize(vm, api);
+
+	Sqrat::RootTable rootable(vm);
+
+	/*
+	* @name setLookAtTarget
+	* @param (number) x
+	* @param (number) y
+	* @param (number) z
+	*/
+	rootable.SquirrelFunc("setLookAtTarget", sq_setLookAtTarget, 4, ".nnn");
+
+	/*
+	* @name lookAtTarget
+	*/
+	rootable.SquirrelFunc("lookAtTarget", sq_lookAtTarget);
+
+	SqModule::Print("(Immersive-Head-Movements): Module has been initialized...");
 
 	return SQ_OK;
 }
